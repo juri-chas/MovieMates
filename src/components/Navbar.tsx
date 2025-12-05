@@ -5,7 +5,7 @@ export function Navbar() {
     <header className="navbar">
       <div className="navbar__inner">
         <Link to="/" className="navbar__logo">
-          ReelMates
+          MovieMates
         </Link>
         <nav className="navbar__links">
           <NavLink to="/" end className="navbar__link">

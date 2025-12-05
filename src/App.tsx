@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
 import { HomePage } from "./pages/HomePage";
 import { SearchPage } from "./pages/SearchPage";
@@ -7,7 +7,7 @@ import { ProfilePage } from "./pages/ProfilePage";
 
 function App() {
   return (
-    <BrowserRouter>
+    <>
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -15,7 +15,7 @@ function App() {
         <Route path="/movie/:id" element={<MovieDetailPage />} />
         <Route path="/profile" element={<ProfilePage />} />
       </Routes>
-    </BrowserRouter>
+    </>
   );
 }
 

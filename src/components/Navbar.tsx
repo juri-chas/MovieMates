@@ -1,11 +1,24 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 export function Navbar() {
   return (
-    <nav>
-      <Link to="/">Home</Link> |{" "}
-      <Link to="/search">Search</Link> |{" "}
-      <Link to="/profile">Profile</Link>
-    </nav>
+    <header className="navbar">
+      <div className="navbar__inner">
+        <Link to="/" className="navbar__logo">
+          ReelMates
+        </Link>
+        <nav className="navbar__links">
+          <NavLink to="/" end className="navbar__link">
+            Home
+          </NavLink>
+          <NavLink to="/search" className="navbar__link">
+            Search
+          </NavLink>
+          <NavLink to="/profile" className="navbar__link">
+            Profile
+          </NavLink>
+        </nav>
+      </div>
+    </header>
   );
 }

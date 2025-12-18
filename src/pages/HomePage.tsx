@@ -6,6 +6,8 @@ import {
 } from "../components/MovieDetailCard";
 
 const FEATURED_IDS = [
+  "tt0103064", // Terminator 2
+  "tt0088247", // Terminator
   "tt0241527", // Harry Potter 1
   "tt0372784", // Batman Begins
   "tt0848228", // The Avengers

@@ -78,9 +78,7 @@ export function SearchPage() {
 
       {loading && <p style={{ marginTop: 16 }}>Loading...</p>}
 
-      {error && (
-        <p style={{ marginTop: 16, color: "#f97316" }}>{error}</p>
-      )}
+      {error && <p style={{ marginTop: 16, color: "#f97316" }}>{error}</p>}
 
       {!loading && !error && movies.length === 0 && (
         <p style={{ marginTop: 16 }}>
@@ -95,14 +93,17 @@ export function SearchPage() {
           </p>
           <div className="movie-grid">
             {movies.map((m) => (
-              <MovieCard
-                key={m.imdbID}
-                movie={m}
-                generalRating={ratings[m.imdbID] ?? null} // IMDb as Global
-                userRating={null} // later
-                friendsRating={null} // later
-                friendsCount={null} // later
-              />
+              <div>
+                <MovieCard
+                  key={m.imdbID}
+                  movie={m}
+                  generalRating={ratings[m.imdbID] ?? null} // IMDb as Global
+                  userRating={null} // later
+                  friendsRating={null} // later
+                  friendsCount={null} // later
+                />
+                <div>{m.imdbID}</div>
+              </div>
             ))}
           </div>
         </>

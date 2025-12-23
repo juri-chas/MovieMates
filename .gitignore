@@ -6,10 +6,13 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+<<<<<<< HEAD
 .env
 .env*
 !.env.example
 
+=======
+>>>>>>> parent of b4a616b (addition to gitingore)
 
 node_modules
 dist

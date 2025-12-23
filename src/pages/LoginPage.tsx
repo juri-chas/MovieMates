@@ -1,12 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { OAuthButtons } from "../components/OAuthButtons.tsx";
-import { PasswordInput } from "../components/PasswordInput.tsx";
+import { OAuthButtons } from "../components/OAuthButtons";
+import { PasswordInput } from "../components/PasswordInput";
 
 export function LoginPage() {
-  const { login } = useAuth();
+  const { login, user } = useAuth();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (user) navigate("/");
+  }, [user, navigate]);
 
   return (
     <form

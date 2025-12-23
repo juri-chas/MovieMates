@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
 import { HomePage } from "./pages/HomePage";
-import { SearchPage } from "./pages/SearchPage";
+import SearchPage from "./pages/SearchPage";
 import { MovieDetailPage } from "./pages/MovieDetailPage";
 import { ProfilePage } from "./pages/ProfilePage";
 

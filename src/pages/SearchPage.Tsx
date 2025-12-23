@@ -1,113 +1,168 @@
-import { useState } from "react";
-import type { FormEvent } from "react";
-import {
-  searchMovies,
-  getMovieById,
-  type MovieSearchItem,
-  type MovieDetail,
-} from "../api/movieApi";
-import { MovieCard } from "../components/MovieCard";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-type RatingsById = Record<string, number | null>;
+type Item = {
+  Title: string;
+  Year: string;
+  imdbID: string;
+  Type: string;
+  Poster: string;
+};
 
-export function SearchPage() {
+const API_KEY = import.meta.env.VITE_OMDB_KEY;
+const BASE = "https://www.omdbapi.com/";
+
+export default function SearchPage() {
   const [query, setQuery] = useState("");
-  const [movies, setMovies] = useState<MovieSearchItem[]>([]);
-  const [ratings, setRatings] = useState<RatingsById>({});
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [type, setType] = useState("");
+  const [minYear, setMinYear] = useState("");
+  const [maxYear, setMaxYear] = useState("");
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    if (!query.trim()) return;
+  const [items, setItems] = useState<Item[]>([]);
+  const [status, setStatus] = useState<"idle" | "loading" | "error" | "empty">(
+    "idle"
+  );
+  const [error, setError] = useState("");
 
-    try {
-      setLoading(true);
-      setError(null);
-      setMovies([]);
-      setRatings({});
+  // debounce
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+  useEffect(() => {
+    const id = setTimeout(() => setDebouncedQuery(query.trim()), 350);
+    return () => clearTimeout(id);
+  }, [query]);
 
-      const result = await searchMovies(query);
-      setMovies(result);
-
-      // fetch details for each movie to get imdbRating
-      const details: Array<MovieDetail | null> = await Promise.all(
-        result.map(async (m) => {
-          try {
-            return await getMovieById(m.imdbID);
-          } catch {
-            return null;
-          }
-        })
-      );
-
-      const ratingMap: RatingsById = {};
-      for (const d of details) {
-        if (!d) continue;
-        const num =
-          d.imdbRating && d.imdbRating !== "N/A"
-            ? parseFloat(d.imdbRating)
-            : null;
-        ratingMap[d.imdbID] = Number.isNaN(num as number) ? null : num;
-      }
-      setRatings(ratingMap);
-    } catch (err) {
-      setError("Failed to fetch movies");
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (!API_KEY) {
+      setStatus("error");
+      setError("Missing OMDb API key.");
+      return;
     }
-  }
 
-  const hasResults = !loading && !error && movies.length > 0;
+    if (!debouncedQuery) {
+      setStatus("idle");
+      setItems([]);
+      return;
+    }
+
+    const controller = new AbortController();
+
+    async function run() {
+      setStatus("loading");
+      setError("");
+
+      const url = new URL(BASE);
+      url.searchParams.set("apikey", API_KEY);
+      url.searchParams.set("s", debouncedQuery);
+      if (type) url.searchParams.set("type", type);
+
+      try {
+        const res = await fetch(url.toString(), {
+          signal: controller.signal,
+        });
+        const data = await res.json();
+
+        if (data.Response === "False") {
+          setItems([]);
+          setStatus("empty");
+          return;
+        }
+
+        setItems(data.Search || []);
+        setStatus("idle");
+      } catch (e: any) {
+        if (e?.name === "AbortError") return;
+        setStatus("error");
+        setError("Search failed.");
+      }
+    }
+
+    run();
+    return () => controller.abort();
+  }, [debouncedQuery, type]);
+
+  // year range filter (client-side)
+  const filtered = items.filter((m) => {
+    const year = parseInt(m.Year, 10);
+    if (Number.isNaN(year)) return false;
+
+    if (minYear && year < Number(minYear)) return false;
+    if (maxYear && year > Number(maxYear)) return false;
+
+    return true;
+  });
 
   return (
     <div>
       <h1>Search</h1>
-      <p style={{ opacity: 0.8, marginBottom: 8 }}>
-        Find a movie or series, then open it to see details and reviews.
-      </p>
 
-      <form onSubmit={handleSubmit} className="search-form">
+      <form
+        className="search-form"
+        onSubmit={(e) => {
+          e.preventDefault();
+          setDebouncedQuery(query.trim());
+        }}
+      >
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search for a movie..."
+          placeholder="Search movies..."
         />
         <button type="submit">Search</button>
       </form>
 
-      {loading && <p style={{ marginTop: 16 }}>Loading...</p>}
+      <div className="filters-simple">
+        <select value={type} onChange={(e) => setType(e.target.value)}>
+          <option value="">All</option>
+          <option value="movie">Movie</option>
+          <option value="series">Series</option>
+          <option value="episode">Episode</option>
+        </select>
 
-      {error && <p style={{ marginTop: 16, color: "#f97316" }}>{error}</p>}
+        <input
+          value={minYear}
+          onChange={(e) => setMinYear(e.target.value)}
+          placeholder="Min year"
+        />
 
-      {!loading && !error && movies.length === 0 && (
-        <p style={{ marginTop: 16 }}>
-          No results yet. Try searching for something.
-        </p>
-      )}
+        <input
+          value={maxYear}
+          onChange={(e) => setMaxYear(e.target.value)}
+          placeholder="Max year"
+        />
+      </div>
 
-      {hasResults && (
-        <>
-          <p style={{ marginTop: 16, opacity: 0.8 }}>
-            Found {movies.length} result{movies.length > 1 ? "s" : ""}.
-          </p>
-          <div className="movie-grid">
-            {movies.map((m) => (
-              <div>
-                <MovieCard
-                  key={m.imdbID}
-                  movie={m}
-                  generalRating={ratings[m.imdbID] ?? null} // IMDb as Global
-                  userRating={null} // later
-                  friendsRating={null} // later
-                  friendsCount={null} // later
-                />
-                <div>{m.imdbID}</div>
+      {status === "loading" && <p>Loading…</p>}
+      {status === "error" && <p className="error">{error}</p>}
+      {status === "empty" && <p className="muted">No results.</p>}
+
+      <div className="movie-grid">
+        {filtered.map((m) => (
+          <Link
+            key={m.imdbID}
+            to={`/movie/${m.imdbID}`}
+            className="movie-card-list-item"
+          >
+            {m.Poster !== "N/A" ? (
+              <img
+                className="movie-card-list-item__poster"
+                src={m.Poster}
+                alt={m.Title}
+              />
+            ) : (
+              <div className="movie-card-list-item__poster movie-card-list-item__poster--placeholder">
+                ?
               </div>
-            ))}
-          </div>
-        </>
-      )}
+            )}
+
+            <div className="movie-card-list-item__info">
+              <h3>{m.Title}</h3>
+              <p className="movie-card-list-item__meta">
+                {m.Year} • {m.Type}
+              </p>
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

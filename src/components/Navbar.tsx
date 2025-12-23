@@ -17,6 +17,9 @@ export function Navbar() {
           <NavLink to="/profile" className="navbar__link">
             Profile
           </NavLink>
+          <NavLink to="/login" className="navbar__link">
+            Login
+          </NavLink>
         </nav>
       </div>
     </header>

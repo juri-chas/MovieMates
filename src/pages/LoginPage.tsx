@@ -1,10 +1,9 @@
-import type { useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
-
+import { OAuthButtons } from "../components/OAuthButtons.tsx";
+import { PasswordInput } from "../components/PasswordInput.tsx";
 
 export function LoginPage() {
-  return <h1>Login</h1>
-  const Login = () => {
   const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,9 +15,12 @@ export function LoginPage() {
         login(email, password);
       }}
     >
+      <h1>Login</h1>
+      <p>Test</p>
       <input
         type="email"
         placeholder="Email"
+        value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
 
@@ -32,5 +34,4 @@ export function LoginPage() {
       <OAuthButtons />
     </form>
   );
-}
 }

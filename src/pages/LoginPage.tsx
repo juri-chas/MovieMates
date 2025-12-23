@@ -3,7 +3,7 @@ import { useAuth } from "../hooks/useAuth";
 
 
 export function LoginPage() {
-  return <h1>Login</h1>
+  <h1>Login</h1>
   const Login = () => {
   const { login } = useAuth();
   const [email, setEmail] = useState("");

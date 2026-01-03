@@ -1,0 +1,73 @@
+/* base.css */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #06060b;
+  --text: #f4f4f5;
+  --muted: #a1a1aa;
+  --muted2: #71717a;
+
+  --panel: rgba(16, 18, 27, 0.62);   /* glass */
+  --panel2: rgba(16, 18, 27, 0.38);
+
+  --border: rgba(255, 255, 255, 0.12);
+  --border2: rgba(255, 255, 255, 0.20);
+
+  --accent: #ff7a18;     /* punchier orange */
+  --accentSoft: rgba(255, 122, 24, 0.18);
+  --accentSoft2: rgba(255, 122, 24, 0.10);
+
+  --shadow: rgba(0, 0, 0, 0.55);
+  --shadow2: rgba(0, 0, 0, 0.35);
+
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+
+  /* noticeable new background */
+  background:
+    radial-gradient(900px 500px at 20% -10%, rgba(255, 122, 24, 0.22), transparent 60%),
+    radial-gradient(900px 600px at 110% 20%, rgba(56, 189, 248, 0.14), transparent 55%),
+    radial-gradient(700px 400px at 40% 110%, rgba(168, 85, 247, 0.12), transparent 55%),
+    linear-gradient(180deg, #0a0a12, #05050a 55%, #040409);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.app-container {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 18px 16px 50px;
+}
+
+/* Small global typography rhythm */
+h1 {
+  margin: 10px 0 8px;
+  font-size: 1.55rem;
+  letter-spacing: -0.02em;
+}
+
+p {
+  margin: 0 0 10px;
+}
+
+/* helpers */
+.muted { color: var(--muted); }
+.error { color: #fb7185; }

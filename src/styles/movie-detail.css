@@ -1,0 +1,156 @@
+/* movie-detail.css */
+
+.movie-card {
+  max-width: 950px;
+  margin: 20px auto;
+  padding: 16px;
+  border-radius: 20px;
+
+  background: var(--panel);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.movie-card__content {
+  display: flex;
+  gap: 16px;
+}
+
+.movie-card__poster img {
+  width: 250px;
+  border-radius: 18px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.45);
+}
+
+.movie-card__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.movie-card__title {
+  margin: 0;
+  font-size: 1.55rem;
+  font-weight: 950;
+  letter-spacing: -0.02em;
+}
+
+.movie-card__meta {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.movie-card__plot {
+  margin: 0;
+  line-height: 1.55;
+  color: rgba(244, 244, 245, 0.92);
+}
+
+/* ratings */
+.movie-card__ratings {
+  margin-top: 8px;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(16, 18, 27, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.movie-card__rating-main {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.movie-card__rating-main-value {
+  font-size: 1.7rem;
+  font-weight: 950;
+  color: var(--accent);
+}
+
+.movie-card__rating-main-label {
+  color: var(--muted);
+}
+
+.movie-card__rating-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.movie-card__rating-chip {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 0.78rem;
+}
+
+.movie-card__rating-chip strong {
+  font-weight: 900;
+}
+
+/* friends */
+.movie-card__friends h2 {
+  margin: 10px 0 6px;
+  font-size: 1rem;
+  color: rgba(244, 244, 245, 0.95);
+}
+
+.friend-review {
+  display: flex;
+  gap: 12px;
+  padding-top: 12px;
+  margin-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.friend-review__avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.friend-review__header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 900;
+}
+
+.friend-review__rating {
+  color: var(--accent);
+}
+
+.friend-review__comment {
+  margin: 4px 0 0;
+  color: rgba(244, 244, 245, 0.88);
+}
+
+.movie-card__average {
+  margin-top: 2px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-weight: 950;
+  color: var(--accent);
+}
+
+/* mobile */
+@media (max-width: 720px) {
+  .movie-card__content {
+    flex-direction: column;
+  }
+
+  .movie-card__poster img {
+    width: 100%;
+    max-width: 340px;
+  }
+}

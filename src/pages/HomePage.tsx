@@ -14,28 +14,20 @@ const FEATURED_IDS = [
   "tt0468569",
 ];
 
+// real shuffle (not sort(Math.random))
+function shuffle<T>(arr: T[]) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 const MOCK_FRIEND_REVIEWS = [
-  {
-    id: "1",
-    name: "Teddy",
-    avatarUrl: "https://i.pravatar.cc/100?img=5",
-    rating: 6,
-    comment: "Overrated but still fun.",
-  },
-  {
-    id: "2",
-    name: "Alex",
-    avatarUrl: "https://i.pravatar.cc/100?img=12",
-    rating: 8,
-    comment: "Would watch again.",
-  },
-  {
-    id: "3",
-    name: "Maya",
-    avatarUrl: "https://i.pravatar.cc/100?img=32",
-    rating: 7,
-    comment: "Solid movie night pick.",
-  },
+  { id: "1", name: "Teddy", avatarUrl: "https://i.pravatar.cc/100?img=5", rating: 6, comment: "Overrated but still fun." },
+  { id: "2", name: "Alex", avatarUrl: "https://i.pravatar.cc/100?img=12", rating: 8, comment: "Would watch again." },
+  { id: "3", name: "Maya", avatarUrl: "https://i.pravatar.cc/100?img=32", rating: 7, comment: "Solid movie night pick." },
 ];
 
 export function HomePage() {
@@ -51,15 +43,33 @@ export function HomePage() {
         setLoading(true);
         setError(null);
 
-        // load 24 movies (with repeats allowed)
-        const picked = Array.from({ length: 24 }, () =>
-          FEATURED_IDS[Math.floor(Math.random() * FEATURED_IDS.length)]
-        );
+        // read "recently shown" from sessionStorage
+        const lastJson = sessionStorage.getItem("mm_last_ids");
+        const lastIds: string[] = lastJson ? JSON.parse(lastJson) : [];
+
+        // avoid showing the same ones again first
+        const fresh = FEATURED_IDS.filter((id) => !lastIds.includes(id));
+        const pool = fresh.length >= 4 ? fresh : FEATURED_IDS; // fallback if pool too small
+
+        // pick as many as possible without repeats
+        const pickedUnique = shuffle(pool);
+
+        // if you want lots of cards but your pool is small, we cycle through
+        const wanted = 24;
+        const picked: string[] = [];
+        while (picked.length < wanted) {
+          for (const id of pickedUnique) {
+            picked.push(id);
+            if (picked.length >= wanted) break;
+          }
+        }
+
+        // save first chunk as "recently shown" so reload changes more
+        sessionStorage.setItem("mm_last_ids", JSON.stringify(pickedUnique.slice(0, 8)));
 
         const results = await Promise.all(
           picked.map(async (id) => {
             try {
-              // if your getMovieById doesn't accept signal, it's fine to ignore controller here
               return await getMovieById(id);
             } catch {
               return null;
@@ -71,9 +81,7 @@ export function HomePage() {
           setMovies(results.filter((m): m is MovieDetail => m !== null));
         }
       } catch {
-        if (!controller.signal.aborted) {
-          setError("Failed to load featured movies");
-        }
+        if (!controller.signal.aborted) setError("Failed to load featured movies");
       } finally {
         if (!controller.signal.aborted) setLoading(false);
       }
@@ -85,7 +93,6 @@ export function HomePage() {
 
   return (
     <div>
-      {/* Full-width header + divider */}
       <div className="home-bleed">
         <div className="home-bleed__inner">
           <div className="home__top">
@@ -97,15 +104,11 @@ export function HomePage() {
             </div>
           </div>
         </div>
-
         <div className="home-divider" />
       </div>
 
       {error && <p className="error">{error}</p>}
       {loading && <p className="muted">Loading featured movies...</p>}
-      {!loading && !error && movies.length === 0 && (
-        <p className="muted">No featured movies available.</p>
-      )}
 
       <div className="movie-grid">
         {movies.map((m, idx) => {
@@ -114,10 +117,8 @@ export function HomePage() {
               ? parseFloat(m.imdbRating)
               : null;
 
-          // cycle the mock friends so cards look varied
           const f1 = MOCK_FRIEND_REVIEWS[idx % MOCK_FRIEND_REVIEWS.length];
-          const f2 =
-            MOCK_FRIEND_REVIEWS[(idx + 1) % MOCK_FRIEND_REVIEWS.length];
+          const f2 = MOCK_FRIEND_REVIEWS[(idx + 1) % MOCK_FRIEND_REVIEWS.length];
 
           return (
             <Link
@@ -149,16 +150,8 @@ export function HomePage() {
                     </span>
 
                     <div className="home-card__avatars" title="Friend reviews">
-                      <img
-                        src={f1.avatarUrl}
-                        alt={f1.name}
-                        className="home-card__avatar"
-                      />
-                      <img
-                        src={f2.avatarUrl}
-                        alt={f2.name}
-                        className="home-card__avatar"
-                      />
+                      <img src={f1.avatarUrl} alt={f1.name} className="home-card__avatar" />
+                      <img src={f2.avatarUrl} alt={f2.name} className="home-card__avatar" />
                     </div>
                   </div>
 

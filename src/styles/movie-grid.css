@@ -1,28 +1,50 @@
 /* movie-grid.css */
 
+/* default grid (Search) */
 .movie-grid {
-  margin-top: 14px;
+  margin-top: 18px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 18px;
 }
 
+/* home grid (forces 3 per row on desktop) */
+.movie-grid--home {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 900px) {
+  .movie-grid--home {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .movie-grid--home {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* cards */
 .movie-card-list-item {
+  position: relative;
   display: flex;
   flex-direction: column;
-  background: var(--panel);
-  border-radius: 16px;
-  overflow: hidden;
   text-decoration: none;
   color: inherit;
-  border: 1px solid var(--border);
-  box-shadow: 0 8px 18px var(--shadow);
-  transition: transform 0.12s ease, border-color 0.12s ease;
+
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(16, 18, 27, 0.35);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.55);
+
+  transition: transform 0.14s ease, border-color 0.14s ease;
 }
 
 .movie-card-list-item:hover {
-  transform: translateY(-2px);
-  border-color: rgba(249, 115, 22, 0.7);
+  transform: translateY(-4px);
+  border-color: rgba(255, 122, 24, 0.5);
 }
 
 .movie-card-list-item__poster {
@@ -30,6 +52,21 @@
   aspect-ratio: 2 / 3;
   object-fit: cover;
   background: #0b1020;
+  filter: saturate(1.05) contrast(1.02);
+}
+
+/* dark fade at bottom so text is readable */
+.movie-card-list-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 40%,
+    rgba(0, 0, 0, 0.25) 65%,
+    rgba(0, 0, 0, 0.75) 100%
+  );
+  pointer-events: none;
 }
 
 .movie-card-list-item__poster--placeholder {
@@ -42,12 +79,18 @@
 }
 
 .movie-card-list-item__info {
-  padding: 10px 12px 12px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 12px;
+  z-index: 1;
 }
 
 .movie-card-list-item__info h3 {
   margin: 0 0 4px;
   font-size: 1rem;
+  font-weight: 900;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -56,5 +99,43 @@
 .movie-card-list-item__meta {
   margin: 0;
   font-size: 0.85rem;
+  color: rgba(244, 244, 245, 0.82);
+}
+
+/* Home header area (kept here to avoid making a new file) */
+.home__top {
+  margin-top: 6px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.home__title {
+  margin: 0 0 6px;
+}
+
+.home__subtitle {
+  margin: 0;
   color: var(--muted);
+}
+
+.home__refresh {
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(16, 18, 27, 0.55);
+  color: var(--text);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.home__refresh:hover {
+  border-color: rgba(255, 122, 24, 0.5);
+}
+
+.home__refresh:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }

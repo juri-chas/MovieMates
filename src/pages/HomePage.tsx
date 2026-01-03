@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { getMovieById, type MovieDetail } from "../api/movieApi";
-import {
-  MovieDetailCard,
-  type FriendReview,
-} from "../components/MovieDetailCard";
 
 const FEATURED_IDS = [
   "tt0103064", // Terminator 2
@@ -17,78 +14,85 @@ const FEATURED_IDS = [
   "tt0468569", // Dark Knight
 ];
 
-const MOCK_FRIEND_REVIEWS: FriendReview[] = [
-  {
-    id: "1",
-    name: "Teddy",
-    avatarUrl: "https://i.pravatar.cc/100?img=5",
-    rating: 6,
-    comment: "Overrated but still fun.",
-  },
-];
+function pickRandom(ids: string[], count: number) {
+  const shuffled = [...ids].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, count);
+}
 
 export function HomePage() {
   const [movies, setMovies] = useState<MovieDetail[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function loadRandomList() {
-      try {
-        setLoading(true);
-        setError(null);
+  async function loadFeatured() {
+    try {
+      setLoading(true);
+      setError(null);
 
-        // pick 3–5 random ids from FEATURED_IDS
-        const shuffled = [...FEATURED_IDS].sort(() => Math.random() - 0.5);
-        const picked = shuffled.slice(0, 4); // show 4 cards
+      const picked = pickRandom(FEATURED_IDS, 6); // show 6 cards (2 rows on desktop)
 
-        const results = await Promise.all(
-          picked.map(async (id) => {
-            try {
-              return await getMovieById(id);
-            } catch {
-              return null;
-            }
-          })
-        );
+      const results = await Promise.all(
+        picked.map(async (id) => {
+          try {
+            return await getMovieById(id);
+          } catch {
+            return null;
+          }
+        })
+      );
 
-        setMovies(results.filter((m): m is MovieDetail => m !== null));
-      } catch (err) {
-        setError("Failed to load featured movies");
-      } finally {
-        setLoading(false);
-      }
+      setMovies(results.filter((m): m is MovieDetail => m !== null));
+    } catch {
+      setError("Failed to load featured movies");
+    } finally {
+      setLoading(false);
     }
+  }
 
-    loadRandomList();
+  useEffect(() => {
+    loadFeatured();
   }, []);
-
-  if (loading) return <p>Loading featured movies...</p>;
-  if (error) return <p>{error}</p>;
-  if (movies.length === 0) return <p>No featured movies available.</p>;
 
   return (
     <div>
-      <h1>Featured movies</h1>
-      <p style={{ opacity: 0.8, marginBottom: 12 }}>
-        Random picks every time you open the app.
-      </p>
+      <div className="home__top">
+        <div>
+          <h1 className="home__title">Featured picks</h1>
+          <p className="home__subtitle">Random picks every time. Hit refresh for new ones.</p>
+        </div>
 
-      {movies.map((movie) => {
-        const parsedImdb =
-          movie.imdbRating && movie.imdbRating !== "N/A"
-            ? parseFloat(movie.imdbRating)
-            : null;
+        <button className="home__refresh" onClick={loadFeatured} disabled={loading}>
+          {loading ? "Loading..." : "Refresh"}
+        </button>
+      </div>
 
-        return (
-          <MovieDetailCard
-            key={movie.imdbID}
-            movie={movie}
-            averageRating={parsedImdb}
-            friendReviews={MOCK_FRIEND_REVIEWS}
-          />
-        );
-      })}
+      {error && <p className="error">{error}</p>}
+
+      <div className="movie-grid movie-grid--home">
+        {movies.map((m) => (
+          <Link key={m.imdbID} to={`/movie/${m.imdbID}`} className="movie-card-list-item">
+            {m.Poster !== "N/A" ? (
+              <img className="movie-card-list-item__poster" src={m.Poster} alt={m.Title} />
+            ) : (
+              <div className="movie-card-list-item__poster movie-card-list-item__poster--placeholder">
+                ?
+              </div>
+            )}
+
+            <div className="movie-card-list-item__info">
+              <h3>{m.Title}</h3>
+              <p className="movie-card-list-item__meta">
+                {m.Year}
+                {m.imdbRating && m.imdbRating !== "N/A" ? ` • IMDb ${m.imdbRating}` : ""}
+              </p>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      {!loading && !error && movies.length === 0 && (
+        <p className="muted">No featured movies available.</p>
+      )}
     </div>
   );
 }

@@ -1,0 +1,5 @@
+@import "./base.css";
+@import "./navbar.css";
+@import "./search.css";
+@import "./movie-grid.css";
+@import "./movie-detail.css";

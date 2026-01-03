@@ -1,0 +1,155 @@
+/* ===== Movie detail card ===== */
+
+.movie-card {
+  background: #1f1f1f;
+  color: var(--text);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 900px;
+  margin: 24px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.movie-card__content {
+  display: flex;
+  gap: 24px;
+}
+
+.movie-card__poster img {
+  border-radius: 16px;
+  width: 260px;
+  height: auto;
+  object-fit: cover;
+}
+
+.movie-card__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.movie-card__title {
+  margin: 0;
+}
+
+.movie-card__plot {
+  line-height: 1.4;
+}
+
+.movie-card__meta {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* ratings */
+
+.movie-card__ratings {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.movie-card__rating-main {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.movie-card__rating-main-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent2);
+}
+
+.movie-card__rating-main-label {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.movie-card__rating-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.movie-card__rating-chip {
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  padding: 3px 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+}
+
+.movie-card__rating-chip strong {
+  font-weight: 600;
+}
+
+/* friends reviews */
+
+.movie-card__friends h2 {
+  margin: 12px 0 8px;
+  font-size: 1rem;
+}
+
+.friend-review {
+  display: flex;
+  gap: 12px;
+  padding-top: 8px;
+  border-top: 1px solid #444;
+  margin-top: 8px;
+}
+
+.friend-review__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.friend-review__body {
+  flex: 1;
+}
+
+.friend-review__header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+}
+
+.friend-review__rating {
+  color: var(--accent);
+}
+
+.friend-review__comment {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.movie-card__average {
+  margin-top: 4px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* responsive */
+
+@media (max-width: 720px) {
+  .movie-card__content {
+    flex-direction: column;
+  }
+
+  .movie-card__poster img {
+    width: 100%;
+    max-width: 320px;
+  }
+}

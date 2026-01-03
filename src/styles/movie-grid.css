@@ -1,0 +1,164 @@
+/* movie-grid.css */
+
+/* ===== Grid ===== */
+.movie-grid {
+  margin-top: 26px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 24px;
+}
+
+
+/* ===== Card ===== */
+.movie-card-list-item {
+  display: flex;
+  gap: 18px;
+
+  padding: 18px;
+  border-radius: 24px;
+  text-decoration: none;
+  color: inherit;
+
+  background: rgba(16, 18, 27, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.6);
+
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.movie-card-list-item:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 122, 24, 0.55);
+}
+
+/* ===== Poster ===== */
+.movie-card-list-item__poster {
+  width: 200px;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 18px;
+  flex-shrink: 0;
+  background: #0b1020;
+}
+
+.movie-card-list-item__poster--placeholder {
+  width: 200px;
+  aspect-ratio: 2 / 3;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0f172a;
+  color: #64748b;
+  font-size: 2.2rem;
+}
+
+/* ===== Info area ===== */
+.movie-card-list-item__info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.movie-card-list-item__info h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 950;
+  line-height: 1.2;
+}
+
+.movie-card-list-item__meta {
+  font-size: 0.9rem;
+  color: rgba(244, 244, 245, 0.75);
+}
+
+/* ===== Social block ===== */
+.home-card__social {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.home-card__social-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.home-card__pill {
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 800;
+
+  background: rgba(255, 122, 24, 0.18);
+  border: 1px solid rgba(255, 122, 24, 0.4);
+  color: rgba(255, 240, 220, 0.95);
+}
+
+.home-card__avatars {
+  display: flex;
+  align-items: center;
+}
+
+.home-card__avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(16, 18, 27, 1);
+  margin-left: -10px;
+}
+
+.home-card__avatar:first-child {
+  margin-left: 0;
+}
+
+.home-card__friendline {
+  font-size: 0.9rem;
+  color: rgba(244, 244, 245, 0.92);
+  line-height: 1.4;
+}
+
+/* ===== Full-width header + divider ===== */
+.home-bleed {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+.home-bleed__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.home-divider {
+  height: 1px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.12);
+  margin-top: 14px;
+}
+
+/* home header */
+.home__top {
+  margin-top: 6px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.home__title {
+  margin: 0 0 6px;
+}
+
+.home__subtitle {
+  margin: 0;
+  color: var(--muted);
+}

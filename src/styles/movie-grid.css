@@ -1,69 +1,60 @@
-/* ===== Search form ===== */
+/* movie-grid.css */
 
-.search-form {
-  margin-top: 12px;
+.movie-grid {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.movie-card-list-item {
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  background: var(--panel);
+  border-radius: 16px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 18px var(--shadow);
+  transition: transform 0.12s ease, border-color 0.12s ease;
 }
 
-.search-form input {
-  flex: 1;
-  padding: 8px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--border2);
-  background: rgba(15, 23, 42, 0.9);
-  color: #e5e7eb;
-  min-width: 0;
+.movie-card-list-item:hover {
+  transform: translateY(-2px);
+  border-color: rgba(249, 115, 22, 0.7);
 }
 
-.search-form input::placeholder {
-  color: var(--muted2);
+.movie-card-list-item__poster {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  background: #0b1020;
 }
 
-.search-form button {
-  border-radius: 999px;
-  border: none;
-  padding: 8px 16px;
-  background: var(--accent);
-  color: var(--bg);
-  font-weight: 600;
-  cursor: pointer;
-}
-
-/* ===== Search filters + pagination ===== */
-
-.filters-simple {
-  margin-top: 12px;
+.movie-card-list-item__poster--placeholder {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
   align-items: center;
+  justify-content: center;
+  background: #0f172a;
+  color: #64748b;
+  font-size: 2rem;
 }
 
-.filters-simple select,
-.filters-simple input {
-  padding: 8px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--border2);
-  background: rgba(15, 23, 42, 0.9);
-  color: #e5e7eb;
+.movie-card-list-item__info {
+  padding: 10px 12px 12px;
 }
 
-.checkbox {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  user-select: none;
+.movie-card-list-item__info h3 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.checkbox input {
-  width: 16px;
-  height: 16px;
-}
-
-.pagination-simple {
-  margin-top: 10px;
-  display: flex;
-  gap: 10px;
-  align-items: center;
+.movie-card-list-item__meta {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
 }

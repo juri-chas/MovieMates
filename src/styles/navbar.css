@@ -1,22 +1,21 @@
-/* ===== Navbar ===== */
+/* navbar.css */
 
 .navbar {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   position: sticky;
   top: 0;
   z-index: 10;
-  background-color: rgba(5, 5, 9, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    to bottom,
+    rgba(5, 5, 9, 0.92),
+    rgba(5, 5, 9, 0.75),
+    transparent
+  );
 }
 
 @supports (backdrop-filter: blur(10px)) {
   .navbar {
     backdrop-filter: blur(10px);
-    background: linear-gradient(
-      to bottom,
-      rgba(5, 5, 9, 0.95),
-      rgba(5, 5, 9, 0.8),
-      transparent
-    );
   }
 }
 
@@ -30,16 +29,16 @@
 }
 
 .navbar__logo {
-  font-weight: 700;
-  font-size: 1.1rem;
-  letter-spacing: 0.04em;
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
   text-decoration: none;
   color: var(--accent);
 }
 
 .navbar__links {
   display: flex;
-  gap: 16px;
+  gap: 10px;
 }
 
 .navbar__link {
@@ -48,6 +47,7 @@
   font-size: 0.95rem;
   padding: 6px 10px;
   border-radius: 999px;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
 .navbar__link:hover {
@@ -56,5 +56,5 @@
 
 .navbar__link.active {
   background: var(--accent);
-  color: var(--bg);
+  color: #0b0b12;
 }

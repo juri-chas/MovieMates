@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { PasswordInput } from "../components/PasswordInput";
-import { OAuthButtons } from "../components/OuthButtons";
+import { OAuthButtons } from "../components/OAuthButtons";
 
 
 export function LoginPage() {

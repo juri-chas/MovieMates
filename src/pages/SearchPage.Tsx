@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+function isFullYear(value: string) {
+  return /^\d{4}$/.test(value);
+}
+
+
 type Item = {
   Title: string;
   Year: string;
@@ -85,11 +90,12 @@ export default function SearchPage() {
     const year = parseInt(m.Year, 10);
     if (Number.isNaN(year)) return false;
 
-    if (minYear && year < Number(minYear)) return false;
-    if (maxYear && year > Number(maxYear)) return false;
+    if (isFullYear(minYear) && year < Number(minYear)) return false;
+    if (isFullYear(maxYear) && year > Number(maxYear)) return false;
 
     return true;
   });
+
 
   return (
     <div>

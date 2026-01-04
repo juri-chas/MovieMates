@@ -1,4 +1,4 @@
-const OAuthButtons = () => {
+export const OAuthButtons = () => {
   return (
     <>
       <button onClick={() => window.location.href = "/auth/discord"}>
@@ -12,3 +12,4 @@ const OAuthButtons = () => {
       </button>
     </>
   );
+};

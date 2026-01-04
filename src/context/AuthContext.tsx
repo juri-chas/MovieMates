@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useState, useEffect, type ReactNode } from "react";
+import * as authService from "../services/authService";
 
 
 type User = {
@@ -48,15 +49,25 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
-  const login = async (email: string, password: string) => {
-    // API call
+  useEffect(() => {
+    const existing = authService.getCurrentUser();
+    if (existing) setUser(existing);
+  }, []);
+
+  const login = async (_email: string, _password: string) => {
+    const u = await authService.login(_email, _password);
+    setUser(u);
   };
 
   const register = async (data: RegisterData) => {
-    // API call
+    const u = await authService.register(data);
+    setUser(u);
   };
 
-  const logout = () => setUser(null);
+  const logout = () => {
+    authService.logout();
+    setUser(null);
+  };
 
   return (
     <AuthContext.Provider value={{ user, login, register, logout }}>

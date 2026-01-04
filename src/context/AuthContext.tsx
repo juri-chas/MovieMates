@@ -50,8 +50,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const existing = authService.getCurrentUser();
-    if (existing) setUser(existing);
+    const loadUser = async () => {
+      const existing = await authService.getCurrentUser();
+      if (existing) setUser(existing);
+    };
+    loadUser();
   }, []);
 
   const login = async (_email: string, _password: string) => {

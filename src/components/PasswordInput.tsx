@@ -1,7 +1,9 @@
+import { useState } from "react";
 type Props = {
   value: string;
   onChange: (v: string) => void;
 };
+
 
 export const PasswordInput = ({ value, onChange }: Props) => {
   const [show, setShow] = useState(false);

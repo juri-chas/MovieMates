@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { PasswordInput } from "../components/PasswordInput";
-import { OAuthButtons } from "../components/OuthButtons";
+import { OAuthButtons } from "../components/OAuthButtons";
 
 
 export function LoginPage() {
-  <h1>Login</h1>
-  const Login = () => {
   const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,6 +16,7 @@ export function LoginPage() {
         login(email, password);
       }}
     >
+      <h1>Login</h1>
       <input
         type="email"
         placeholder="Email"
@@ -34,5 +33,4 @@ export function LoginPage() {
       <OAuthButtons />
     </form>
   );
-}
 }

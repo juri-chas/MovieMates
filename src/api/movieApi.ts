@@ -25,6 +25,7 @@ export type MovieDetail = {
   imdbID: string;
   imdbRating: string;   // "8.2" or "N/A"
   Genre: string;
+  Rated?: string;
   Runtime: string;
   Ratings?: OmdbRating[]; // extra sources like Rotten Tomatoes, Metacritic etc
 };

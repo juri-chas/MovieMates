@@ -1,0 +1,56 @@
+/* profile.css */
+.profile-container {
+  max-width: 720px;
+  margin: 40px auto;
+  padding: 24px;
+}
+
+.profile-card {
+  background: rgba(20, 20, 30, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.profile-card h1 {
+  margin: 0 0 12px 0;
+}
+
+.profile-field {
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.profile-field strong {
+  display: inline-block;
+  width: 160px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.profile-actions {
+  margin-top: 20px;
+}
+
+.profile-actions button {
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: none;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  cursor: pointer;
+}
+
+.not-logged {
+  padding: 24px;
+  text-align: center;
+}
+
+.not-logged a {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .profile-container { margin: 20px 12px; }
+  .profile-field strong { width: 120px; }
+}

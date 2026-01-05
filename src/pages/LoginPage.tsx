@@ -47,12 +47,12 @@ export function LoginPage() {
       </form>
 
       <div className="login-links">
-        <a href="/forgot-password">Glömt lösenord?</a>
-        <a href="/register">Skapa konto?</a>
+        <a href="/forgot-password">Forgot password?</a>
+        <a href="/register">Create account?</a>
       </div>
 
       <div className="login-divider">
-        <span>eller</span>
+        <span>or</span>
       </div>
 
       <div className="login-oauth">

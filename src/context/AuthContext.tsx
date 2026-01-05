@@ -26,22 +26,20 @@ type RegisterData = {
 // Contitions for password
 type PasswordConditions = {
   minLength: number;
-  requireUpperCase: boolean;
-  requireLowerCase: boolean;
-  requireNumbers: boolean;
-  requireSpecialChars: boolean;
-  requireAtLeastEightChars: boolean;
-  requireNotOldPassword: boolean;
+  mustIncludeUpperCase: boolean;
+  mustIncludeLowerCase: boolean;
+  mustIncludeNumbers: boolean;
+  mustIncludeSpecialChars: boolean;
+  mustNotBeOldPassword: boolean;
 };
 
 export const passwordConditions: PasswordConditions = {
   minLength: 8,
-  requireUpperCase: true,
-  requireLowerCase: true,
-  requireNumbers: true,
-  requireSpecialChars: true,
-  requireAtLeastEightChars: true,
-  requireNotOldPassword: true
+  mustIncludeUpperCase: true,
+  mustIncludeLowerCase: true,
+  mustIncludeNumbers: true,
+  mustIncludeSpecialChars: true,
+  mustNotBeOldPassword: true
 };
 
 export const AuthContext = createContext<AuthContextType | null>(null);

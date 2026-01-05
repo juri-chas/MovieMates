@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useDebounce } from "../hooks/useDebounce";
 
 function isFullYear(value: string) {
   return /^\d{4}$/.test(value);
 }
-
 
 type Item = {
   Title: string;
@@ -29,12 +29,8 @@ export default function SearchPage() {
   );
   const [error, setError] = useState("");
 
-  // debounce
-  const [debouncedQuery, setDebouncedQuery] = useState("");
-  useEffect(() => {
-    const id = setTimeout(() => setDebouncedQuery(query.trim()), 350);
-    return () => clearTimeout(id);
-  }, [query]);
+  // ✅ debounced value (replaces setTimeout logic)
+  const debouncedQuery = useDebounce(query.trim(), 350);
 
   useEffect(() => {
     if (!API_KEY) {
@@ -61,9 +57,7 @@ export default function SearchPage() {
       if (type) url.searchParams.set("type", type);
 
       try {
-        const res = await fetch(url.toString(), {
-          signal: controller.signal,
-        });
+        const res = await fetch(url.toString(), { signal: controller.signal });
         const data = await res.json();
 
         if (data.Response === "False") {
@@ -96,7 +90,6 @@ export default function SearchPage() {
     return true;
   });
 
-
   return (
     <div>
       <h1>Search</h1>
@@ -105,7 +98,7 @@ export default function SearchPage() {
         className="search-form"
         onSubmit={(e) => {
           e.preventDefault();
-          setDebouncedQuery(query.trim());
+          // ✅ no manual submit needed, debounce handles it
         }}
       >
         <input

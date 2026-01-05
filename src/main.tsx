@@ -5,16 +5,16 @@ import "./styles/index.css";
 
 
 import App from "./App.tsx";
-import {AuthContext } from "./context/AuthContext.tsx";
+import { AuthProvider } from "./context/AuthContext.tsx";
 
-const authValue = { user: null, login: () => {}, logout: () => {} }; // shape must match AuthContextType
+// Use AuthProvider instead of manual context value
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-      <AuthContext.Provider value={authValue}>
+      <AuthProvider>
         <App />
-      </AuthContext.Provider>
+      </AuthProvider>
     </BrowserRouter>
   </StrictMode>
 );

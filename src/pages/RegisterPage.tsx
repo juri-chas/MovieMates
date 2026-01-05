@@ -59,7 +59,6 @@ export function RegisterPage() {
         <PasswordInput
           value={formData.password}
           onChange={(v) => setFormData((prev) => ({ ...prev, password: v }))}
-          placeholder="Password"
         />
 
         <button type="submit" disabled={loading}>

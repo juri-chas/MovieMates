@@ -5,7 +5,7 @@ import SearchPage from "./pages/SearchPage";
 import { MovieDetailPage } from "./pages/MovieDetailPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { LoginPage } from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
+import { RegisterPage } from "./pages/RegisterPage";
 import { AuthProvider } from "./context/AuthContext";
 
 function App() {

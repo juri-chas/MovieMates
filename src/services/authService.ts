@@ -1,8 +1,6 @@
 // Server-backed authService with offline fallback.
 // If VITE_API_BASE_URL is not set or backend is unreachable, uses local mock auth.
 
-import { fakeAuthService } from "../hooks/useAuthMode";
-
 export type User = {
   id: string;
   profileName: string;
@@ -18,9 +16,83 @@ type RegisterData = {
 
 const TOKEN_KEY = "mm_token";
 const USER_KEY = "mm_current_user";
+const MOCK_USERS_KEY = "mm_mock_users";
 const API_BASE = (import.meta.env.VITE_API_BASE_URL as string) || "";
 
 let backendAvailable: boolean | null = null;
+
+const getDefaultMockUsers = () => [
+  {
+    id: "1",
+    profileName: "Test User",
+    email: "test@example.com",
+    password: "Test123!",
+    emailVerified: true,
+  },
+  {
+    id: "2",
+    profileName: "Demo User",
+    email: "demo@example.com",
+    password: "Demo123!",
+    emailVerified: false,
+  },
+];
+
+// Inline fake auth for offline mode
+const fakeAuthService = {
+  register: async (data: RegisterData): Promise<User> => {
+    const users = JSON.parse(localStorage.getItem(MOCK_USERS_KEY) ?? JSON.stringify(getDefaultMockUsers()));
+    if (users.find((u: any) => u.email === data.email)) {
+      throw new Error("Email already registered");
+    }
+
+    const newUser = {
+      id: Date.now().toString(),
+      profileName: data.profileName,
+      email: data.email,
+      password: data.password,
+      emailVerified: false,
+    };
+
+    users.push(newUser);
+    localStorage.setItem(MOCK_USERS_KEY, JSON.stringify(users));
+
+    const publicUser: User = {
+      id: newUser.id,
+      profileName: newUser.profileName,
+      email: newUser.email,
+      emailVerified: newUser.emailVerified,
+    };
+
+    localStorage.setItem(USER_KEY, JSON.stringify(publicUser));
+    return publicUser;
+  },
+
+  login: async (email: string, password: string): Promise<User> => {
+    const users = JSON.parse(localStorage.getItem(MOCK_USERS_KEY) ?? JSON.stringify(getDefaultMockUsers()));
+    const found = users.find((u: any) => u.email === email && u.password === password);
+    if (!found) throw new Error("Invalid credentials (offline mode)");
+
+    const publicUser: User = {
+      id: found.id,
+      profileName: found.profileName,
+      email: found.email,
+      emailVerified: found.emailVerified,
+    };
+
+    localStorage.setItem(USER_KEY, JSON.stringify(publicUser));
+    return publicUser;
+  },
+
+  logout: async () => {
+    localStorage.removeItem(USER_KEY);
+  },
+
+  getCurrentUser: (): User | null => {
+    const s = localStorage.getItem(USER_KEY);
+    return s ? (JSON.parse(s) as User) : null;
+  },
+};
 
 async function checkBackendAvailable(): Promise<boolean> {
   if (backendAvailable !== null) return backendAvailable;
@@ -31,7 +103,7 @@ async function checkBackendAvailable(): Promise<boolean> {
   }
 
   try {
-    const res = await fetch(API_BASE + "/auth/me", {
+    await fetch(API_BASE + "/auth/me", {
       method: "GET",
       headers: { Authorization: "Bearer test" },
     });

@@ -3,7 +3,7 @@ import { Navbar } from "./components/Navbar";
 import { HomePage } from "./pages/HomePage";
 import SearchPage from "./pages/SearchPage";
 import { MovieDetailPage } from "./pages/MovieDetailPage";
-import { ProfilePage } from "./pages/ProfilePage";
+import  ProfilePage  from "./pages/ProfilePage";
 // import { LoginPage } from "./pages/LoginPage";
 // import RegisterPage from "./pages/RegisterPage";
 import { AuthProvider } from "./context/AuthContext";
@@ -17,7 +17,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/movie/:id" element={<MovieDetailPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/profile" element={<ProfilePage/>} />
         </Routes>
       </div>
     </AuthProvider>

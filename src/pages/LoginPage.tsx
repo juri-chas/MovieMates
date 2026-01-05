@@ -1,63 +1,33 @@
-import { useState } from "react";
-import { useAuth } from "../hooks/useAuth";
-import { PasswordInput } from "../components/PasswordInput";
-import { OAuthButtons } from "../components/OAuthButtons";
-import "../styles/login.css";
-
-export function LoginPage() {
-  const { login } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-    try {
-      await login(email, password);
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : "Login failed";
-      setError(msg);
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+export default function LoginPage() {
   return (
-    <div className="login-container">
-      <h1>Login</h1>
-      {error && <div className="login-error">{error}</div>}
-      <form className="login-form" onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+    <div className="login-page">
+      <section className="login-card">
+        <h1 className="login-title">Welcome back</h1>
+        <p className="login-subtitle muted">
+          Login is not implemented yet. This page represents a future
+          authentication flow.
+        </p>
 
-        <PasswordInput value={password} onChange={setPassword} />
+        <form className="login-form">
+          <div className="login-field">
+            <label>Email</label>
+            <input type="email" placeholder="you@example.com" disabled />
+          </div>
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Logging in..." : "Login"}
-        </button>
-      </form>
+          <div className="login-field">
+            <label>Password</label>
+            <input type="password" placeholder="••••••••" disabled />
+          </div>
 
-      <div className="login-links">
-        <a href="/forgot-password">Glömt lösenord?</a>
-        <a href="/register">Skapa konto?</a>
-      </div>
+          <button className="login-btn" disabled>
+            Log in
+          </button>
+        </form>
 
-      <div className="login-divider">
-        <span>eller</span>
-      </div>
-
-      <div className="login-oauth">
-        <OAuthButtons />
-      </div>
+        <p className="login-footer muted">
+          Don’t have an account? <span>Create one</span>
+        </p>
+      </section>
     </div>
   );
 }
